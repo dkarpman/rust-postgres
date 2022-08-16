@@ -9,7 +9,7 @@ use tokio::net::UnixStream;
 use tokio::net::{self, TcpStream};
 use tokio::time;
 
-pub(crate) async fn connect_socket(
+pub async fn connect_socket(
     host: &Host,
     port: u16,
     connect_timeout: Option<Duration>,
