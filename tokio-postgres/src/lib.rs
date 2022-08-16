@@ -156,7 +156,7 @@ pub mod config;
 mod connect;
 mod connect_raw;
 #[cfg(feature = "runtime")]
-mod connect_socket;
+pub mod connect_socket;
 mod connect_tls;
 mod connection;
 mod copy_in;
