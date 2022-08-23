@@ -224,7 +224,7 @@ mod geo_types_06;
 mod geo_types_07;
 #[cfg(feature = "with-serde_json-1")]
 mod serde_json_1;
-#[cfg(feature = "smol_str-01")]
+#[cfg(feature = "with-smol_str-01")]
 mod smol_str_01;
 #[cfg(feature = "with-time-0_2")]
 mod time_02;
@@ -836,7 +836,7 @@ pub trait ToSql: fmt::Debug {
     ) -> Result<IsNull, Box<dyn Error + Sync + Send>>;
 
     /// Specify the encode format
-    fn encode_format(&self) -> Format {
+    fn encode_format(&self, _ty: &Type) -> Format {
         Format::Binary
     }
 }
@@ -868,8 +868,8 @@ where
         T::accepts(ty)
     }
 
-    fn encode_format(&self) -> Format {
-        (*self).encode_format()
+    fn encode_format(&self, ty: &Type) -> Format {
+        (*self).encode_format(ty)
     }
 
     to_sql_checked!();
@@ -891,9 +891,9 @@ impl<T: ToSql> ToSql for Option<T> {
         <T as ToSql>::accepts(ty)
     }
 
-    fn encode_format(&self) -> Format {
+    fn encode_format(&self, ty: &Type) -> Format {
         match self {
-            Some(ref val) => val.encode_format(),
+            Some(ref val) => val.encode_format(ty),
             None => Format::Binary,
         }
     }
